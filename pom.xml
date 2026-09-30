@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>vamsi.maven.com</groupId>
   <artifactId>vamsi</artifactId>
-<packaging>war</packaging>
+  <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
+
   <name>Bristleback Webapp archetype</name>
   <url>http://maven.apache.org</url>
 
@@ -21,21 +25,25 @@
       <artifactId>bristleback-core</artifactId>
       <version>0.3.5</version>
     </dependency>
+
     <dependency>
       <groupId>pl.bristleback</groupId>
       <artifactId>websocket-engine-jetty</artifactId>
       <version>0.3.5</version>
     </dependency>
+
     <dependency>
       <groupId>pl.bristleback</groupId>
       <artifactId>serialization-engine-jackson</artifactId>
       <version>0.3.5</version>
     </dependency>
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
       <version>${org.springframework.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
@@ -52,9 +60,20 @@
   </dependencies>
 
   <build>
+
     <finalName>petshop</finalName>
+
     <pluginManagement>
+
       <plugins>
+
+        <!-- SonarQube Plugin -->
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>5.2.0.4988</version>
+        </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
@@ -64,17 +83,17 @@
             <target>1.8</target>
           </configuration>
         </plugin>
+
         <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-war-plugin</artifactId>
-    <version>3.3.1</version>
-</plugin>
-        <plugin>
-          <groupId>org.mortbay.jetty</groupId>
-          <artifactId>jetty-maven-plugin</artifactId>
-          <version>8.1.10.v20130312</version>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>3.3.1</version>
         </plugin>
+
       </plugins>
+
     </pluginManagement>
+
   </build>
+
 </project>
