@@ -1,20 +1,44 @@
 pipeline {
-    agent any
+    agent {
+        label 'worker-1'
+    }
     stages {
-        stage(git) {
-            steps {
+        stage ('git') {
+            steps{
                 git branch: 'main', url: 'https://github.com/sharathdhondi-08/pet_shop.git'
             }
         }
-        stage(build) {
-            steps {
+        stage ('maven') {
+            steps{
                 sh 'mvn clean package'
             }
         }
-        stage(deploy) {
-            steps {
-                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'dcedef17-c56b-418b-90ca-65aa4ede67d1', path: '', url: 'http://54.197.37.110:8085/')], contextPath: 'petshop', war: 'target/*.war'
+        stage ('sonar') {
+            steps{
+                withSonarQubeEnv('sonar-1') {
+                    sh 'mvn verify sonar:sonar'
+                }
+            }
+        }
+        stage ('deploy') {
+            steps{
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'greatcoder', path: '', url: 'http://35.154.14.236:8080/')], contextPath: 'petshop', war: 'target/*.war'
             }
         }
     }
+        post{
+            success {
+                emailext(
+                    to: 'sharathdhondi@gmail',
+                    subject: 'build success',
+                    body: 'sucess build')
+            }
+            failure {
+                emailext(
+                    to: 'sharathdhondi@gmail.com',
+                    subject: 'build fail',
+                    body: 'build fail'
+                    )
+            }
+        }
 }
