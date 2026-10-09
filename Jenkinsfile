@@ -1,7 +1,5 @@
 pipeline{
-    agent {
-        label 'worker-2'
-    }
+    agent any
     stages {
         stage ('image build') {
             steps {
