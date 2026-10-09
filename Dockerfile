@@ -1,17 +1,15 @@
-# 1. Use official Tomcat image
-FROM tomcat:9.0
+from tomcat:10.1
 
-# 2. Set working directory to the Tomcat webapps folder
-WORKDIR /usr/local/tomcat/webapps/
+run apt-get update && apt-get install -y maven git && rm -rf /var/lib/apt/lists/*
 
-# 3. Remove default ROOT webapp (optional)
-RUN rm -rf ROOT
+run git clone https://github.com/sharathdhondi-08/pet_shop.git /opt/petshop
 
-# 4. Copy your WAR file from pet_shop/target/ into Tomcat
-COPY target/*.war /usr/local/tomcat/webapps/ROOT.war
+workdir /opt/petshop
 
-# 5. Expose port
-EXPOSE 8080
+run mvn clean package
 
-# 6. Start Tomcat
-CMD ["catalina.sh", "run"]
+run rm -rf /usr/local/tomcat/webapps/*
+
+run cp -R /usr/local/tomcat/webapps.dist/* /usr/local/tomcat/webapps/
+
+run cp /opt/petshop/target/ *. war /usr/local/tomcat/webapps/petshop.war
