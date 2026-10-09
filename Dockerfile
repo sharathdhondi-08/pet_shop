@@ -12,4 +12,4 @@ run rm -rf /usr/local/tomcat/webapps/*
 
 run cp -R /usr/local/tomcat/webapps.dist/* /usr/local/tomcat/webapps/
 
-run cp /opt/petshop/target/ *. war /usr/local/tomcat/webapps/petshop.war
+run cp /opt/petshop/target/*. war /usr/local/tomcat/webapps/petshop.war
