@@ -12,7 +12,7 @@ pipeline{
             steps {
                 sh 'sudo docker stop c1 || true'
                 sh 'sudo docker rm c1 || true' 
-                sh 'sudo docker run -d --name c1 -p 8080:8080 image-1:v1'
+                sh 'sudo docker run -d --name c1 -p 8081:8080 image-1:v1'
             }
         }
     }
