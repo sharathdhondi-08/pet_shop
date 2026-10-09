@@ -3,11 +3,11 @@
 # ========================================================
 FROM maven:3.9-eclipse-temurin-17 AS builder
 
-# Set a working directory inside the build container
+# Set the working directory to where you want the app to live
 WORKDIR /app
 
-# Clone your project directly inside this builder stage
-RUN git clone https://github.com/sharathdhondi-08/pet_shop.git /opt/petshop
+# Clone your project directly INTO the current working directory (".")
+RUN git clone https://github.com/sharathdhondi-08/pet_shop.git .
 
 # Compile your code and package the WAR file
 RUN mvn clean package
@@ -17,17 +17,11 @@ RUN mvn clean package
 # ========================================================
 FROM tomcat:10.1
 
-# Clean out default Tomcat placeholder webapps
 RUN rm -rf /usr/local/tomcat/webapps/*
-
-# Fix for Tomcat 10's default layout structure 
 RUN cp -R /usr/local/tomcat/webapps.dist/* /usr/local/tomcat/webapps/ || true
 
-# Copy ONLY the compiled .war file from the builder stage
-# (This acts like a bridge between the two image blocks)
+# Copies seamlessly from the correct working directory path (/app/target/)
 COPY --from=builder /app/target/*.war /usr/local/tomcat/webapps/petshop.war
 
 EXPOSE 8080
-
 CMD ["catalina.sh", "run"]
-
