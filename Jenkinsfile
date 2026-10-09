@@ -5,7 +5,7 @@ pipeline{
     stages {
         stage ('image build') {
             steps {
-                sh 'docker build -t image-1:v1 .'
+                sh 'sudo docker build -t image-1:v1 .'
             }
         }
         stage ('deploy to container') {
