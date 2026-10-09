@@ -1,44 +1,19 @@
-pipeline {
+pipeline{
     agent {
-        label 'worker-1'
+        label 'worker-2'
     }
     stages {
-        stage ('git') {
-            steps{
-                git branch: 'main', url: 'https://github.com/sharathdhondi-08/pet_shop.git'
+        stage ('image build') {
+            steps {
+                sh 'docker build -t image-1:v1 .'
             }
         }
-        stage ('maven') {
-            steps{
-                sh 'mvn clean package'
-            }
-        }
-        stage ('sonar') {
-            steps{
-                withSonarQubeEnv('sonar-1') {
-                    sh 'mvn verify sonar:sonar'
-                }
-            }
-        }
-        stage ('deploy') {
-            steps{
-                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'greatcoder', path: '', url: 'http://35.154.14.236:8080/')], contextPath: 'petshop', war: 'target/*.war'
+        stage ('deploy to container') {
+            steps {
+                sh 'docker stop c1 || true'
+                sh 'docker rm c1 || true' 
+                sh 'docker run -d --name c1 -p 8080:8080 image-1:v1'
             }
         }
     }
-        post{
-            success {
-                emailext(
-                    to: 'sharathdhondi@gmail',
-                    subject: 'build success',
-                    body: 'sucess build')
-            }
-            failure {
-                emailext(
-                    to: 'sharathdhondi@gmail.com',
-                    subject: 'build fail',
-                    body: 'build fail'
-                    )
-            }
-        }
 }
