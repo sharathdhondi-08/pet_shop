@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  petshop-service:
+    image: sharathdhondi/firstpush-petshop:v1
+    ports:
+      - "8083:8080"
+    deploy:
+      mode: replicated
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+
